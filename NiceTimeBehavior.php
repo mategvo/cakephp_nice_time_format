@@ -41,43 +41,17 @@ class NiceTimeBehavior extends ModelBehavior {
 	}
 
 	public function timeAfter($time){
-		$msDif = strtotime(date('Y-m-d H:i', strtotime($time))) - strtotime(date('Y-m-d H:i'));
+		$msDif = strtotime(date('Y-m-d H:i')) - strtotime(date('Y-m-d H:i', strtotime($time)));
 		if($msDif > 60*60*24){
-			$timeagoInt = round(($msDif/(60*60*24)));
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' days';
-			}else{
-				$timeago = $timeagoInt.' day';		
-			}
-
+			$timeago = round(($msDif/(60*60*24))).' days. ago';
 		}elseif($msDif > 60*60){
-
-			$timeagoInt = round(($msDif/(60*60)));
-			if($timeagoInt >= 1){
-				$timeago = $timeagoInt.' '.__('hours');
-			}else{
-				$timeago = $timeagoInt.' '.__('hour');		
-			}
-
+			$timeago = round(($msDif/(60*60))).' hours. ago';
 		}elseif($msDif >= 60){
-			$timeagoInt = round(($msDif/60));
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' '.__('minutes');
-			}else{
-				$timeago = $timeagoInt.' '.__('minute');		
-			}	
-			
+			$timeago = round(($msDif/60)).' min. ago';
 		}elseif($msDif > 10){
-
-			$timeagoInt = round($msDif);
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' '.__('seconds');
-			}else{
-				$timeago = $timeagoInt.' '.__('second');		
-			}	
-
+			$timeago = round($msDif).' sec. ago';
 		}else{
-			$timeago = __("just now");
+			$timeago = "just now";
 		}
 
 		return $timeago;
@@ -85,11 +59,7 @@ class NiceTimeBehavior extends ModelBehavior {
 
 	public function niceTime($time){
 
-		if(strtotime($time) > strtotime('now')){
-			$time = $this->timeAfter($time);
-		}else{
-			$time = $this->timeAfter($time);
-		}
+		$time = $this->timeAfter($time);
 
 		return $time;
 	}
