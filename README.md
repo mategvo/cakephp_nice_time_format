@@ -1,6 +1,6 @@
 This behavior adds nicely formated time to your model find results.
 
-Set up:
+## Set up:
 
 1.Download the zip
 2.Place "NiceTimeBehavior.php" in app/Model/Behavior
@@ -13,11 +13,20 @@ Set up:
 
     public $actsAs = array('NiceTime');
 
-Use $model['Model']['field_name_nice'] to display the date/time in nice format
-f.e.
+## Example
 
+Use $model['Model']['field_name_nice'] to display the date/time in nice format
+
+```
 <? echo Message sent '.$model['Model']['field_name_nice']; ?>
+```
+
 Would display:
+
+```
 "Message sent 2 hours ago."
+```
 or
+```
 "Message sent just now."
+```
