@@ -1,98 +1,23 @@
-<?php
+This behavior adds nicely formated time to your model find results.
 
-/*
+Set up:
 
-Creates extra field formated in nice phrase
-Works with CakePHP 2.X
+1.Download the zip
+2.Place "NiceTimeBehavior.php" in app/Model/Behavior
+3.Open the file and specify which fields should be modified in nice time format (default)
 
-Modify the field list that should appear in "nice" format:
-$this->fields = array('created','modified');
+	$this->fields = array('created','modified');
 
-*/
+4.The behavior will add new fields "created_nice" and "modified_nice" with formated datetime,
+5.Go to app/Model, open models with fields that should be formated in nice time, add the "NiceTime" Behaviour to the array or paste this code:
 
-class NiceTimeBehavior extends ModelBehavior {
+    public $actsAs = array('NiceTime');
 
+Use $model['Model']['field_name_nice'] to display the date/time in nice format
+f.e.
 
-	public function setup(Model $Model, $settings = array()) {
-		
-		//the fields that should be modified
-		$this->fields = array('created','modified');
-
-	}
-
-	public function afterFind(Model $model, $results, $primary = false) {
-		foreach ($results as $key => $result) {
-			foreach ($this->fields as $field) {
-				foreach ($result as $modelName => $value) {
-
-					if(isset($value[$field])){
-						if( $value[$field] != null ){
-							if(!is_array($value[$field])){
-								$results[$key][$modelName][$field.'_nice'] = $this->niceTime($results[$key][$modelName][$field]);
-							}
-						}
-					}
-					
-				}
-			}
-		}
-
-		return $results;
-	}
-
-	public function timeAfter($time){
-		$msDif = strtotime(date('Y-m-d H:i', strtotime($time))) - strtotime(date('Y-m-d H:i'));
-		if($msDif > 60*60*24){
-			$timeagoInt = round(($msDif/(60*60*24)));
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' days';
-			}else{
-				$timeago = $timeagoInt.' day';		
-			}
-
-		}elseif($msDif > 60*60){
-
-			$timeagoInt = round(($msDif/(60*60)));
-			if($timeagoInt >= 1){
-				$timeago = $timeagoInt.' '.__('hours');
-			}else{
-				$timeago = $timeagoInt.' '.__('hour');		
-			}
-
-		}elseif($msDif >= 60){
-			$timeagoInt = round(($msDif/60));
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' '.__('minutes');
-			}else{
-				$timeago = $timeagoInt.' '.__('minute');		
-			}	
-			
-		}elseif($msDif > 10){
-
-			$timeagoInt = round($msDif);
-			if($timeagoInt > 1){
-				$timeago = $timeagoInt.' '.__('seconds');
-			}else{
-				$timeago = $timeagoInt.' '.__('second');		
-			}	
-
-		}else{
-			$timeago = __("just now");
-		}
-
-		return $timeago;
-	}
-
-	public function niceTime($time){
-
-		if(strtotime($time) > strtotime('now')){
-			$time = $this->timeAfter($time);
-		}else{
-			$time = $this->timeAfter($time);
-		}
-
-		return $time;
-	}
-
-
-}
+<? echo Message sent '.$model['Model']['field_name_nice']; ?>
+Would display:
+"Message sent 2 hours ago."
+or
+"Message sent just now."
