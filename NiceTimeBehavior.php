@@ -43,15 +43,15 @@ class NiceTimeBehavior extends ModelBehavior {
 	public function timeAfter($time){
 		$msDif = strtotime(date('Y-m-d H:i')) - strtotime(date('Y-m-d H:i', strtotime($time)));
 		if($msDif > 60*60*24){
-			$timeago = round(($msDif/(60*60*24))).' days. ago';
+			$timeago = round(($msDif/(60*60*24))).' '.__(' days ago');
 		}elseif($msDif > 60*60){
-			$timeago = round(($msDif/(60*60))).' hours. ago';
+			$timeago = round(($msDif/(60*60))).' '.__(' hours ago');
 		}elseif($msDif >= 60){
-			$timeago = round(($msDif/60)).' min. ago';
+			$timeago = round(($msDif/60)).' '.__(' min. ago');
 		}elseif($msDif > 10){
-			$timeago = round($msDif).' sec. ago';
+			$timeago = round($msDif).' '.__('sec. ago');
 		}else{
-			$timeago = "just now";
+			$timeago = __('just now');
 		}
 
 		return $timeago;
